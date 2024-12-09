@@ -52,3 +52,27 @@ This shifts the responsibility for how items are rendered from the `List` compon
 ---
 
 ## Hiher-Order Component (HOC) Pattern
+
+**The Higher-Order Component (HOC)** pattern is used to add additional functionality to an existing component. An HOC is a function that takes a component and returns a new component with enhanced behavior, often by injecting props or modifying how the component behaves.
+
+### Example Usage
+
+The Higher-Order Component (HOC) pattern is used to add additional functionality to an existing component. An HOC is a function that takes a component and returns a new component with enhanced behavior, often by injecting props or modifying how the component behaves.
+
+```jsx
+const ProductListWithToggles = withToggles(ProductList);
+
+export default function App() {
+  return (
+    <div>
+      <h1>Higher-Order Component Demo</h1>
+      <div className="col-2">
+        <ProductList title="Products" items={products} />
+        <ProductListWithToggles title="Products with Toggles" items={products} />
+      </div>
+    </div>
+  );
+}
+```
+
+The `withToggles` HOC takes the `ProductList` component and returns a new component that includes additional toggle functionality (for opening/closing the list and collapsing/expanding items).
