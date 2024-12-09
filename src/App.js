@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { faker } from "@faker-js/faker";
-import "./index.css";
+import "./index";
 
 const products = Array.from({ length: 20 }, () => {
   return {
@@ -48,14 +48,14 @@ function CompanyItem({ company, defaultVisibility }) {
   );
 }
 
-function List({ title, items }) {
+function List({ title, items, render }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const displayItems = isCollapsed ? items.slice(0, 3) : items;
 
   function toggleOpen() {
-    setIsOpen((isOpen) => !isOpen);
+    setIsOpen((open) => !open);
     setIsCollapsed(false);
   }
 
@@ -67,13 +67,7 @@ function List({ title, items }) {
           {isOpen ? <span>&or;</span> : <span>&and;</span>}
         </button>
       </div>
-      {isOpen && (
-        <ul className="list">
-          {displayItems.map((product) => (
-            <ProductItem key={product.productName} product={product} />
-          ))}
-        </ul>
-      )}
+      {isOpen && <ul className="list">{displayItems.map(render)}</ul>}
 
       <button onClick={() => setIsCollapsed((isCollapsed) => !isCollapsed)}>
         {isCollapsed ? `Show all ${items.length}` : "Show less"}
@@ -88,19 +82,26 @@ export default function App() {
       <h1>Render Props Demo</h1>
 
       <div className="col-2">
-        <List title="Products" items={products} />
+        <List
+          title="Products"
+          items={products}
+          render={(product) => (
+            <ProductItem key={product.productName} product={product} />
+          )}
+        />
+
+        <List
+          title="Companies"
+          items={companies}
+          render={(company) => (
+            <CompanyItem
+              key={company.companyName}
+              company={company}
+              defaultVisibility={false}
+            />
+          )}
+        />
       </div>
     </div>
-  );
-}
-
-// LATER: Let's say we got this component from a 3rd-party library, and can't change it. But we still want to add the 2 toggle functionalities to it
-function ProductList({ title, items }) {
-  return (
-    <ul className="list">
-      {items.map((product) => (
-        <ProductItem key={product.productName} product={product} />
-      ))}
-    </ul>
   );
 }
